@@ -1,3 +1,4 @@
+/// <reference path="../../../../node_modules/@types/mocha/index.d.ts"/>
 "use strict";
 var chai_1 = require('chai');
 var enzyme_1 = require('enzyme');
