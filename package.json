@@ -8,17 +8,19 @@
     "prebuild": "npm run clean",
     "build": "tsc",
     "build:watch": "tsc -w",
-    "build:dist": "tsc -p tsconfig.dist.json",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
+    "build:dist": "cross-env NODE_ENV=production webpack --config ./webpack.config.js --color -p",
+    "dev": "npm run css && cross-env NODE_ENV=development webpack-dev-server --inline --hot",
+    "css": "node ./node_modules/typed-css-modules/lib/cli.js src",
     "npm-sh": "npm-sh",
     "secure": "nsp check",
     "check": "npm-check -u",
     "lcheck": "license-checker --csv | grep -v \"MIT.*\\|BSD.*\\|ISC.*\\|WTFPL.*\\|CC-.*\\|Apache.*\"",
     "license-checker": "license-checker --exclude \"MIT, MIT*, MIT/X11, MIT License, BSD, BSD-2-Clause, BSD-3-Clause, BSD*, Apache, Apache-2.0, CC0-1.0, ISC, Public DOmain, WTFPL, (BSD-2-Clause OR MIT OR Apache-2.0), Apache License, Version 2.0, (MIT AND CC-BY-3.0)\"",
     "pretest": "npm run build",
-    "test": "istanbul cover ./node_modules/.bin/_mocha",
+    "test": "npm run copy && istanbul cover ./node_modules/.bin/_mocha",
     "posttest": "node ./scripts/remapped-coverage.js --output ./coverage/typescript",
-    "coverage": "istanbul check-coverage --statements 90 --functions 70 --branches 90 --lines 90 ./coverage/typescript/coverage.json"
+    "coverage": "istanbul check-coverage --statements 90 --functions 70 --branches 90 --lines 90 ./coverage/typescript/coverage.json",
+    "copy": "cd src && find -E . -regex '.*\\.(json|css)' -type f -exec rsync -R {} ../build \\; && cd .."
   },
   "pre-commit": [
     "test"
@@ -66,15 +68,21 @@
     "ts-node": "^1.2.2",
     "tslint": "^3.14.0",
     "tslint-loader": "^2.1.5",
+    "typed-css-modules": "^0.1.12",
     "typescript": "^2.1.0-dev.20160808",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
+    "css-loader": "^0.23.1",
+    "postcss-cssnext": "^2.7.0",
+    "postcss-focus": "^1.0.0",
+    "postcss-reporter": "^1.4.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
-    "react-router": "^2.6.1"
+    "react-router": "^2.6.1",
+    "style-loader": "^0.13.1"
   },
   "standard": {
     "env": [

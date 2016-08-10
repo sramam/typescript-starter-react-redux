@@ -3,6 +3,9 @@
 const path = require('path');
 const loaders = require('./webpack/loaders');
 const plugins = require('./webpack/plugins');
+const cssnext = require('postcss-cssnext');
+const postcssFocus = require('postcss-focus');
+const postcssReporter = require('postcss-reporter');
 
 const applicationEntries = process.env.NODE_ENV === 'development'
   ? [ 'webpack-hot-middleware/client?reload=true' ]
@@ -48,8 +51,19 @@ module.exports = {
     loaders: [
       loaders.tsx,
       loaders.html,
+      loaders.css,
     ],
   },
+
+  postcss: () => [
+    postcssFocus(), // Add a :focus to every :hover
+    cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
+      browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
+    }),
+    postcssReporter({ // Posts messages from plugins to the terminal
+      clearMessages: true,
+    }),
+  ],
 
   externals: {
     'react/lib/ReactContext': 'window',
