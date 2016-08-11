@@ -6,14 +6,16 @@ import * as React from 'react';
 
 import Hello from '../Hello';
 
+function toggle() {};
+
 describe('<Hello />', () => {
 	describe('temp1', () => {
     it('should render hello world', () => {
       const text = 'Hello World';
       const renderedComponent = shallow(
-        <Hello subject="World"/>
+        <Hello show={true} toggle={toggle}/>
       );
-			expect(renderedComponent.text()).to.equal('Hello World');
+			expect(renderedComponent.find('p').text()).to.equal('Hello World');
     });
 	});
 });

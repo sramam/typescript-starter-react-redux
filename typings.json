@@ -10,6 +10,7 @@
     "react-router-redux": "registry:dt/react-router-redux#4.0.0+20160724070902",
     "react-router/history": "registry:dt/react-router/history#2.0.0+20160608102730",
     "redux": "registry:dt/redux#3.5.2+20160703092728",
+    "reselect": "registry:dt/reselect#2.0.2+20160319031821",
     "systemjs": "registry:dt/systemjs#0.19.29+20160702105636"
   }
 }

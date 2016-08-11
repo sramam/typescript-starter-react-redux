@@ -12,14 +12,33 @@
 // tslint:disable-next-line
 import * as React from 'react';
 import Hello from '../../components/Hello/Hello';
+import { toggle } from './actions';
+import { connect } from 'react-redux';
+import { createStructuredSelector }  from 'reselect';
+import { getVisibility } from './selectors';
 
-export default class App extends React.Component<{ children: any }, {}> {
+export interface AppProps {
+  show: boolean;
+  dispatch: any;
+}
+
+class App extends React.Component<AppProps, {}> {
+
+  toggle(): void {
+    this.props.dispatch(toggle());
+  }
 
   render() {
     return (
       <div>
-        <Hello subject='World'/>
+        <Hello show={this.props.show} toggle={this.toggle.bind(this)}/>
       </div>
     );
   }
 }
+
+const mapStateToProps = createStructuredSelector({
+  show: getVisibility(),
+});
+
+export default connect(mapStateToProps)(App);

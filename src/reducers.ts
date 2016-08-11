@@ -5,6 +5,7 @@
 
 import { combineReducers } from 'redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import globalReducer from './containers/App/reducer';
 
 /*
  * routeReducer
@@ -40,5 +41,6 @@ function routeReducer(state = routeInitialState, action) {
 export default function createReducer(asyncReducers?: any): any {
   return combineReducers(Object.assign({}, asyncReducers, {
     route: routeReducer,
+    global: globalReducer,
   }));
 }
