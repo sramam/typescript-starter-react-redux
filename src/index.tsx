@@ -14,6 +14,7 @@ import configureStore from './store';
 
 import App from './containers/App/App';
 import Hello from './components/Hello/Hello';
+import DevTools from './containers/DevTools/DevTools';
 
 const selectLocationState = () => {
   let prevRoutingState;
@@ -34,12 +35,29 @@ const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: selectLocationState(),
 });
 
-ReactDOM.render((
-  <Provider store={ store }>
-    <Router history={ history }>
-      <Route path='/' component={App}>
-        <Route path='Hello' component={Hello}/>
-      </Route>
-    </Router>
-  </Provider>
-), document.getElementById('app'));
+if (process.env.NODE_ENV === 'development') {
+  ReactDOM.render((
+    <Provider store={ store }>
+      <div>
+        <Router history={ history }>
+          <Route path='/' component={App}>
+            <Route path='Hello' component={Hello}/>
+          </Route>
+        </Router>
+        <DevTools />
+      </div>
+    </Provider>
+  ), document.getElementById('app'));
+} else {
+  ReactDOM.render((
+    <Provider store={ store }>
+      <div>
+        <Router history={ history }>
+          <Route path='/' component={App}>
+            <Route path='Hello' component={Hello}/>
+          </Route>
+        </Router>
+      </div>
+    </Provider>
+  ), document.getElementById('app'));
+}

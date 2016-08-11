@@ -5,8 +5,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import createReducer from './reducers';
+import DevTools from './containers/DevTools/DevTools';
 
-const devtools = window.devToolsExtension || (() => noop => noop);
+// const devtools = window.devToolsExtension || (() => noop => noop);
 
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
@@ -16,15 +17,10 @@ export default function configureStore(initialState = {}, history) {
     routerMiddleware(history),
   ];
 
-  const enhancers = [
-    applyMiddleware(...middlewares),
-    devtools(),
-  ];
-
   const store = createStore(
     createReducer(),
     compose(applyMiddleware(...middlewares),
-    devtools())
+    window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument())
   );
 
   // Extensions
