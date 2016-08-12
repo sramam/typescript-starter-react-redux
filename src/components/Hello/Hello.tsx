@@ -7,10 +7,10 @@ export interface HelloProps { show: boolean;
 
 class Hello extends React.Component<HelloProps, {}> {
   render() {
-    const show = this.props.show ? 'visible' : 'hidden';
+    const show = this.props.show ? 'block' : 'none';
     return (
       <div>
-        <p className={styles.title} style={{visibility:show}}>Hello World</p>
+        <p className={styles.title} style={{display:show}}>Hello World</p>
         <button className='btn btn-default'
           onClick={this.props.toggle.bind(this)}>Click Me!</button>
       </div>

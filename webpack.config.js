@@ -36,6 +36,10 @@ module.exports = {
       '.js',
       '.json',
     ],
+    alias: {
+      // required for enzyme to work properly
+      sinon: 'sinon/pkg/sinon',
+    },
   },
 
   plugins: plugins,
@@ -47,11 +51,12 @@ module.exports = {
   module: {
     preLoaders: [
       loaders.tslint,
+      loaders.sinon
     ],
     loaders: [
       loaders.tsx,
       loaders.html,
-      loaders.css,
+      loaders.css
     ],
   },
 

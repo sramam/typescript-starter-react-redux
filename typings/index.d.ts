@@ -12,4 +12,5 @@
 /// <reference path="globals/redux-devtools/index.d.ts" />
 /// <reference path="globals/redux/index.d.ts" />
 /// <reference path="globals/reselect/index.d.ts" />
+/// <reference path="globals/sinon/index.d.ts" />
 /// <reference path="globals/systemjs/index.d.ts" />

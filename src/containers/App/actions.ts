@@ -24,7 +24,7 @@ import {
  *
  * @return {object}    An action object with a type of TOGGLE
  */
-export function toggle() {
+export function toggle(): any {
   return {
     type: TOGGLE,
   };
