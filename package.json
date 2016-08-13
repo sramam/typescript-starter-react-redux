@@ -4,31 +4,32 @@
   "description": "A starter package for typescript projects",
   "main": "dist/index.js",
   "scripts": {
-    "copy": "cd src && find -E . -regex '.*\\.(json|css)' -type f -exec rsync -R {} ../build \\; && cd .."
-    "css": "node ./node_modules/typed-css-modules/lib/cli.js src",
-    "dev": "npm run css && cross-env NODE_ENV=development webpack-dev-server --inline --hot",
-
+    "copy": "cd src && find -E . -regex '.*\\.(json|css)' -type f -exec rsync -R {} ../build \\; && cd ..",
     "clean": "rimraf dist build coverage",
     "prebuild": "npm run clean",
-    "build": "tsc && npm ",
-    "postbuild": "npm run test",
+    "prebuild:dev": "npm run css",
+    "build": "tsc",
     "build:watch": "tsc -w",
-    "build:dist": "tsc -p tsconfig.dist.json",
-    "sh": "npm-sh",
+    "build:dist": "cross-env NODE_ENV=production webpack --config ./webpack.config.js --color -p",
+    "build:dev": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
+    "dev": "npm run build:dev",
+    "css": "node ./node_modules/typed-css-modules/lib/cli.js src",
+    "npm-sh": "npm-sh",
     "secure": "nsp check",
     "check": "npm-check -u",
     "lcheck": "license-checker --csv | grep -v \"MIT.*\\|BSD.*\\|ISC.*\\|WTFPL.*\\|CC-.*\\|Apache.*\"",
     "license-checker": "license-checker --exclude \"MIT, MIT*, MIT/X11, MIT License, BSD, BSD-2-Clause, BSD-3-Clause, BSD*, Apache, Apache-2.0, CC0-1.0, ISC, Public DOmain, WTFPL, (BSD-2-Clause OR MIT OR Apache-2.0), Apache License, Version 2.0, (MIT AND CC-BY-3.0)\"",
-
+    "pretest": "npm run build",
     "test": "npm run copy && istanbul cover ./node_modules/.bin/_mocha",
     "posttest": "node ./scripts/remapped-coverage.js --output ./coverage/typescript",
-    "coverage": "istanbul check-coverage --statements 90 --functions 90 --branches 90 --lines 90 ./coverage/typescript/coverage.json"
+    "coverage": "istanbul check-coverage --statements 90 --functions 70 --branches 90 --lines 90 ./coverage/typescript/coverage.json"
   },
   "pre-commit": [
     "test"
   ],
   "pre-push": [
     "test",
+    "coverage",
     "check",
     "secure"
   ],
