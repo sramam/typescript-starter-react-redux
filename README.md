@@ -1,5 +1,7 @@
-# typescript-starter-node
-A starter repository for node modules written in TypeScript.
+# typescript-starter-react-redux
+
+A starter repository for React applications written in TypeScript.
+Based off of https://github.com/sramam/typescript-starter-node.
 
 ## Goal
 The goal is to be simple, lean and automated.
@@ -13,3 +15,12 @@ Specifically, it bakes in automated support for:
 - [   ] complexity analysis
 - [ x ] dependency security
 - [   ] CI integration
+
+Additions to base boilerplate:
+- [ x ] webpack
+- [ x ] React
+- [ x ] React-Router
+- [ x ] Redux, Reselect
+- [ x ] CSS Modules
+- [ x ] Redux devtools
+- [   ] Generators using plop
