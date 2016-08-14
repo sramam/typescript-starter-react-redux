@@ -9,6 +9,7 @@
 /// <reference path="globals/react/index.d.ts" />
 /// <reference path="globals/redux-devtools-dock-monitor/index.d.ts" />
 /// <reference path="globals/redux-devtools-log-monitor/index.d.ts" />
+/// <reference path="globals/redux-devtools-chart-monitor/index.d.ts" />
 /// <reference path="globals/redux-devtools/index.d.ts" />
 /// <reference path="globals/redux/index.d.ts" />
 /// <reference path="globals/reselect/index.d.ts" />
