@@ -76,7 +76,7 @@ module.exports = {
     // devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]'
   },
   debug: DEBUG ? true : false,
-  devtool: DEBUG ? 'cheap-module-eval-source-map' : 'hidden-source-map',
+  devtool: DEBUG ? 'inline-source-map' : 'hidden-source-map',
   resolve: {
     extensions: [
       '',
