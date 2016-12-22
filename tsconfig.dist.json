@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "module": "commonjs",
     "target": "es6",
+    "declaration": true,
+    "declarationDir": "",
     "noImplicitAny": false,
-    "allowSyntheticDefaultImports": true,
+    "rootDirs": ["src", "node_modules"],
+    "typeRoots": ["node_modules/@types"],
     "sourceMap": true,
+    "removeComments": false,
+    "baseUrl": "./src",
     "jsx": "react",
-    "rootDir": "./src",
-    "outDir": "./dist"
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
+    "app",
     "node_modules",
     "./src/**/*test.ts*",
-    "./src/**/test/*"
+    "./src/**/test/*",
+    "./**/tests/*"
   ]
 }
