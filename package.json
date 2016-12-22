@@ -4,6 +4,9 @@
   "description": "A starter package for typescript projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "check-engines": "check-engines",
     "staged-mods-ok": "git-mods --staged_ok",
