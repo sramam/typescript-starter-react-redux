@@ -1,134 +1,114 @@
 'use strict';
-
 const path = require('path');
-const loaders = require('./webpack/loaders');
-const plugins = require('./webpack/plugins');
-const cssnext = require('postcss-cssnext');
-const postcssFocus = require('postcss-focus');
-const postcssReporter = require('postcss-reporter');
+const getport = require('getport');
+const devapp = require('./config/webpack.dev-app.js');
+const devlib = require('./config/webpack.dev-lib.js');
+const prodapp = require('./config/webpack.prod-app.js');
+const prodlib = require('./config/webpack.prod-lib.js');
 
-const DEBUG = process.env.NODE_ENV !== 'production';
-const NODE_ENV = process.env.NODE_ENV || 'development';
-const BUILD_MODE = process.env.WEBPACK_BUILD_MODE || 'app';
-const mode = `${NODE_ENV}-${BUILD_MODE}`;
-
-const entry = ((_mode) => {
-  const vendor = [
-    'react',
-    'react-dom',
-    'react-redux',
-    'react-router',
-    'react-router-redux',
-    'redux',
-    'redux-saga',
-    'reselect'
-  ];
-  switch (_mode) {
-    case 'production-app':
-      return {
-        app: [
-          path.resolve('.', 'app'),
-          path.resolve('.', 'src')
-        ],
-        // vendor: vendor
-      }
-    case 'development-app':
-      return {
-        app: [
-          path.resolve('.', 'app'),
-          path.resolve('.', 'src'),
-          path.join('webpack-hot-middleware', 'client?reload=true')
-        ],
-        // TODO: Need to get the vendor code into separate chunks.
-        // vendor: vendor
-      }
-    case 'production-lib':
-    case 'development-lib':
-      return {
-        index: [
-          path.resolve('.', 'src')
-        ]
-      };
-      /*
-      return {
-        component: [
-          path.resolve('.', 'src')
-        ],
-        vendor: vendor
-      }*/
-    default:
-      throw new Error(`Unknown webpack build mode: ${_mode}`);
-  }
-})(mode);
-
-const outpath = DEBUG ? 'build' : 'dist';
-
-module.exports = {
-  entry: entry,
+const fullpaths = {
+  base: path.resolve(__dirname),
+  app: path.resolve('./app'),
+  src: path.resolve('./src'),
+  vendor: path.resolve('./node_modules'),
+  tsconfig: {
+    dev: {
+      app: path.resolve(`${__dirname}/config/tsconfig.dev-app.json`),
+      lib: path.resolve(`${__dirname}/config/tsconfig.dev-lib.json`)
+    },
+    prod: {
+      app: path.resolve(`${__dirname}/config/tsconfig.prod-app.json`),
+      lib: path.resolve(`${__dirname}/config/tsconfig.prod-lib.json`)
+    },
+    unittest: {
+      app: path.resolve(`${__dirname}/config/tsconfig.unit-test.json`),
+    }
+  },
+  // devClient: `webpack-dev-server/client?http://${host}:${port}`,
+  // hmr: path.join('webpack-hot-middleware', 'client?reload=true'),
   output: {
-    path: path.resolve(__dirname, outpath),
-    // filename: '[name].[hash].js',
-    filename: '[name].js',
-    publicPath: `/`,
-    // sourceMapFilename: '[name].[hash].js.map',
-    sourceMapFilename: '[name].js.map',
-    // chunkFilename: '[id].chunk.js',
-    // devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]'
-  },
-  debug: DEBUG ? true : false,
-  devtool: DEBUG ? 'inline-source-map' : 'hidden-source-map',
-  resolve: {
-    extensions: [
-      '',
-      '.webpack.js',
-      '.web.js',
-      '.tsx',
-      '.ts',
-      '.js',
-      '.json',
-    ],
-    alias: {
-      // required for enzyme to work properly
-      sinon: 'sinon/pkg/sinon'
+    dev: {
+      app: path.resolve(`${__dirname}/build/app`),
+      lib: path.resolve(`${__dirname}/build/lib`)
     },
-  },
-  plugins: plugins,
-  devServer: {
-    historyApiFallback: {
-      index: '/'
+    prod: {
+      app: path.resolve(`${__dirname}/dist/app`),
+      lib: path.resolve(`${__dirname}/dist/lib`)
     },
+    unittest: {
+      app: path.resolve(`${__dirname}/build/unit-test`)
+    }
   },
-  module: {
-    preLoaders: [
-      loaders.tslint,
-      loaders.sinon
-    ],
-    loaders: [
-      loaders.tsx,
-      loaders.html,
-      loaders.css
-    ],
-  },
-  // ts-loader configuration
-  ts: {
-    configFileName: DEBUG ? 'tsconfig.json' : 'tsconfig.dist.json'
-  },
-  postcss: () => [
-    postcssFocus(), // Add a :focus to every :hover
-    cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
-      browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
-    }),
-    postcssReporter({ // Posts messages from plugins to the terminal
-      clearMessages: true,
-    }),
-  ],
-  // When importing a module whose path matches one of the following, just
-  // assume a corresponding global variable exists and use that instead.
-  // This is important because it allows us to avoid bundling all of our
-  // dependencies, which allows browsers to cache those libraries between builds.
-  // TODO: Need to get the vendor code into separate chunks.
-  // externals: {
-  //   "react": "React",
-  //   "react-dom": "ReactDOM"
-  // }
+  stats: { // relative paths to bundles location
+    dev: {
+      app: {
+        report: path.resolve(`${__dirname}/build/app/stats/report.html`),
+        json: path.resolve(`${__dirname}/build/app/stats/stats.json`)
+      },
+      lib: {
+        report: path.resolve(`${__dirname}/build/lib/stats/report.html`),
+        json: path.resolve(`${__dirname}/build/lib/stats/stats.json`)
+      }
+    },
+    prod: {
+      app: {
+        report: path.resolve(`${__dirname}/dist/app/stats/report.html`),
+        json: path.resolve(`${__dirname}/dist/app/stats/stats.json`)
+      },
+      lib: {
+        report: path.resolve(`${__dirname}/dist/lib/stats/report.html`),
+        json: path.resolve(`${__dirname}/dist/lib/stats/stats.json`)
+      }
+    },
+    unittest: {
+      app: {
+        report: path.resolve(`${__dirname}/build/unit-test/stats/report.html`),
+        json: path.resolve(`${__dirname}/build/unit-test/stats/stats.json`)
+      }
+    }
+  }
+};
+
+module.exports = (env) => {
+  return new Promise((resolve, reject) => {
+    getport(8000, 10000, (err, port) => {
+      return err ? reject(err) : resolve(port);
+    });
+  }).then((port) => {
+    const options = {
+      host: 'localhost',
+      port: port
+    }
+    switch (env) {
+      case 'dev-server':
+      case 'dev-app':
+        return devapp(fullpaths, options)
+      case 'dev-lib':
+        return devlib(fullpaths);
+      case 'development':
+      case 'dev':
+      case 'D':
+        return [
+          devapp(fullpaths, options),
+          // devlib(fullpaths)
+        ];
+      case 'prod-app':
+        return prodapp(fullpaths);
+      case 'prod-lib':
+        return prodlib(fullpaths);
+      case 'production':
+      case 'prod':
+      case 'P':
+        return [
+          prodlib(fullpaths),
+          prodapp(fullpaths)
+        ];
+      default:
+        console.warn(`Unknown env($env). Coercing to 'production'.`);
+        return [
+          prodapp(fullpaths),
+          prodlib(fullpaths)
+        ];
+    }
+  });
 };

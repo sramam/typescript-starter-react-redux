@@ -2,7 +2,7 @@
  * Create the store with asynchronously loaded reducers
  */
 
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { persistState } from 'redux-devtools';
 import DevTools from '../containers/DevTools';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
@@ -11,7 +11,7 @@ import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from '../reducers';
 
-// the next two lines (along with module declarations in declarations.d.ts) 
+// the next two lines (along with module declarations in declarations.d.ts)
 // seem necessary to satisfy TypeScript.
 // interface Window {
 //   __REDUX_DEVTOOLS_EXTENSION__: any;
@@ -29,9 +29,9 @@ function getDebugSessionKey() {
 export default function configureStore(initialState = {}, history): any {
   const reducer = createReducer();
 
-  const instrument = (<any>Window).__REDUX_DEVTOOLS_EXTENSION__
+  /* const instrument = (<any>Window).__REDUX_DEVTOOLS_EXTENSION__
     ? (<any>Window).__REDUX_DEVTOOLS_EXTENSION__
-    : DevTools.instrument;
+    : DevTools.instrument(); */
 
   // Create the store with two middlewares
   // 1. sagaMiddleware: Makes redux-sagas work
@@ -41,18 +41,30 @@ export default function configureStore(initialState = {}, history): any {
     routerMiddleware(history),
     createSagaMiddleware()
   );
-  const composeEnhancers = composeWithDevTools({
+  /* const composeEnhancers = composeWithDevTools({
     // Specify here name, actionsBlacklist, actionsCreators and other options
     // https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#windowdevtoolsextensionconfig
-  });
-  const enhancer = composeEnhancers(
+  }); */
+  let enhancer;
+  if ((<any>Window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+    enhancer = (<any>Window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(
+      middlewares
+    );
+  } else {
+    enhancer = compose(
+      middlewares,
+      DevTools.instrument(),
+      persistState(getDebugSessionKey())
+    );
+  }
+  /* const enhancer = composeEnhancers(
     middlewares,
     // Required! Enable Redux DevTools with the monitors you chose
     // TODO: Commenting out this instrument to make things work
-    // instrument,
+    instrument
     // Optional. Lets you write ?debug_session=<key> in address bar to persist debug sessions
-    persistState(getDebugSessionKey())
-  );
+    // persistState(getDebugSessionKey())
+  ); */
 
   // Note: only Redux >= 3.1.0 supports passing enhancer as third argument.
   // See https://github.com/rackt/redux/releases/tag/v3.1.0

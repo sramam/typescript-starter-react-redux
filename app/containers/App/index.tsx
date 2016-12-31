@@ -11,7 +11,7 @@
 
 // tslint:disable-next-line
 import * as React from 'react';
-import { Hello } from '../../../src/components/Hello';
+import { Hello } from '../../../src';
 import { toggle } from './actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector }  from 'reselect';

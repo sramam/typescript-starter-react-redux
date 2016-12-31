@@ -13,53 +13,41 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import root from 'window-or-global';
 
 import App from './containers/App';
-import {Hello} from '../src/components/Hello';
-import DevTools from './containers/DevTools';
+// import {default as Hello} from '../src/components/Hello';
+import { Hello } from '../src';
+
+
+const DevTools = (process.env.NODE_ENV === 'development')
+    ? require('./containers/DevTools').default
+    : null;
 
 const Store = require('./store');
 
 const selectLocationState = () => {
-  let prevRoutingState;
-
-  return (state) => {
-    const routingState = state.route; // or state.route
-
-    if (routingState !== prevRoutingState) {
-      prevRoutingState = routingState;
-    }
-
-    return prevRoutingState;
-  };
+    let prevRoutingState;
+    return (state) => {
+        const routingState = state.route; // or state.route
+        if (routingState !== prevRoutingState) {
+            prevRoutingState = routingState;
+        }
+        return prevRoutingState;
+    };
 };
 
 const store = Store.configure({}, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: selectLocationState(),
+    selectLocationState: selectLocationState(),
 });
 
-if (process.env.NODE_ENV === 'development') {
-  ReactDOM.render((
-    <Provider store={ store }>
-      <div>
-        <Router history={ history }>
-          <Route path='/' component={App}>
-            <Route path='Hello' component={Hello}/>
-          </Route>
-        </Router>
-        <DevTools />
-      </div>
+ReactDOM.render((
+    <Provider store={store}>
+        <div>
+            <Router history={history}>
+                <Route path='/' component={App}>
+                    <Route path='Hello' component={Hello} />
+                </Route>
+            </Router>
+            {!!DevTools ? <DevTools /> : null}
+        </div>
     </Provider>
-  ), document.getElementById('app'));
-} else {
-  ReactDOM.render((
-    <Provider store={ store }>
-      <div>
-        <Router history={ history }>
-          <Route path='/' component={App}>
-            <Route path='Hello' component={Hello}/>
-          </Route>
-        </Router>
-      </div>
-    </Provider>
-  ), document.getElementById('app'));
-}
+), document.getElementById('app'));

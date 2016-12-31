@@ -4,4 +4,4 @@
 --ui bdd
 --recursive
 --watch-extensions js
-build/**/*test.js
+build/unit-test/**/*test.js

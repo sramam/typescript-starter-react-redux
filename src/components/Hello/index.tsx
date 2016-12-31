@@ -7,7 +7,7 @@ export interface HelloProps {
   toggle(): void;
 }
 
-export class Hello extends React.Component<HelloProps, {}> {
+export default class Hello extends React.Component<HelloProps, {}> {
   render() {
     const show = this.props.show ? 'block' : 'none';
     return (

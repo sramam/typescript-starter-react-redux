@@ -2,9 +2,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-		"declaration": true,
+    "declaration": true,
     "noImplicitAny": false,
-		"rootDirs": ["app", "src", "node_modules"],
+    "rootDirs": ["app", "src", "node_modules"],
     "typeRoots": ["node_modules/@types"],
     "sourceMap": true,
     "removeComments": false,
@@ -14,6 +14,6 @@
   "exclude": [
     "node_modules",
     "test",
-		"dist"
+    "dist"
   ]
 }
