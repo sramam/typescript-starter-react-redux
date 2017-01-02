@@ -10,7 +10,8 @@
     "sourceMap": true,
     "removeComments": false,
     "jsx": "react",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true
   },
   "include": [
     "../app",

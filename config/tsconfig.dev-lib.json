@@ -12,7 +12,8 @@
     "removeComments": false,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "../src"
+    "baseUrl": "../src",
+    "experimentalDecorators": true
   },
   "include": [
     "../src"
