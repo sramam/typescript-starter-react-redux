@@ -41,7 +41,9 @@
     "_:test:unit:copy:_": "cpx \"src/**/*.{json,css}\" ./build/unit-test/src",
     "_:test:unit:run:_": "istanbul cover ./node_modules/.bin/_mocha",
     "_:remap-coverage:dev:_": "node ./scripts/remapped-coverage.js --force_min_cover false --output ./coverage/typescript",
-    "_:remap-coverage:prod:_": "node ./scripts/remapped-coverage.js --force_min_cover true --output ./coverage/typescript"
+    "_:remap-coverage:prod:_": "node ./scripts/remapped-coverage.js --force_min_cover true --output ./coverage/typescript",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "run-batch": {
     "build": [
@@ -214,11 +216,13 @@
     "redux": "^3.5.2",
     "redux-saga": "^0.14.0",
     "reselect": "^2.5.3",
-    "window-or-global": "^1.0.1"
+    "window-or-global": "^1.0.1",
+    "snyk": "^1.316.1"
   },
   "standard": {
     "env": [
       "mocha"
     ]
-  }
+  },
+  "snyk": true
 }
