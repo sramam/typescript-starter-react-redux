@@ -204,7 +204,7 @@
   },
   "dependencies": {
     "check-engines": "^1.4.0",
-    "postcss-cssnext": "^2.7.0",
+    "postcss-cssnext": "^3.0.0",
     "postcss-focus": "^1.0.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
